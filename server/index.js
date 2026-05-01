@@ -105,10 +105,8 @@ app.post('/send', async (req, res) => {
     await sleep(1000 + Math.random() * 2000)
 
     try {
-      // Personalize message with variables
-      let personalizedMessage = message
-        .replace(/{{nome}}/gi, contact.name)
-        .replace(/{{name}}/gi, contact.name)
+      // Personalize message with variables (handles {{nome}}, {{name}}, {{ nome }}, etc.)
+      let personalizedMessage = message.replace(/{{\s*(nome|name)\s*}}/gi, contact.name || 'contato')
       
       const variants = getPhoneVariants(contact.phone); let sent = false
       for (const variant of variants) {

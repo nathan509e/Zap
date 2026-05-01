@@ -14,7 +14,7 @@ function MessageComposer({ message, onChange, selectedCount, onSend, disabled, d
           onClick={() => onChange(message + '{{nome}}')}
           className="text-[10px] bg-white/5 hover:bg-white/10 text-gray-400 px-2 py-1 rounded-md border border-white/10 transition-all"
         >
-          + Inserir {{nome}}
+          + Inserir {"{{nome}}"}
         </button>
       </div>
       <div className="flex flex-col gap-4 mt-6">
