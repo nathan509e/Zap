@@ -28,13 +28,14 @@ function MessageComposer({ message, onChange, selectedCount, onSend, disabled, d
             <select
               value={delay}
               onChange={(e) => onDelayChange(Number(e.target.value))}
-              className="bg-white/5 text-white px-2 py-1 rounded-lg text-xs font-bold focus:outline-none border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+              className="bg-[#1e293b] text-white px-2 py-1 rounded-lg text-xs font-bold focus:outline-none border border-white/10 hover:border-white/20 transition-all cursor-pointer appearance-none"
+              style={{ backgroundColor: '#1e293b', color: 'white' }}
             >
-              <option value={3000}>3s</option>
-              <option value={5000}>5s</option>
-              <option value={10000}>10s</option>
-              <option value={15000}>15s</option>
-              <option value={30000}>30s</option>
+              <option value={3000} className="bg-[#1e293b] text-white">3s</option>
+              <option value={5000} className="bg-[#1e293b] text-white">5s</option>
+              <option value={10000} className="bg-[#1e293b] text-white">10s</option>
+              <option value={15000} className="bg-[#1e293b] text-white">15s</option>
+              <option value={30000} className="bg-[#1e293b] text-white">30s</option>
             </select>
           </div>
         </div>
