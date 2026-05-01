@@ -1,63 +1,59 @@
 import { useState, useEffect } from 'react'
 
 function ContactForm({ contact, onSave, onCancel }) {
-  const [name, setName] = useState('')
-  const [phone, setPhone] = useState('')
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: ''
+  })
 
   useEffect(() => {
     if (contact) {
-      setName(contact.name)
-      setPhone(contact.phone)
+      setFormData({ name: contact.name, phone: contact.phone })
     }
   }, [contact])
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (!name.trim() || !phone.trim()) return
-
-    onSave({
-      id: contact?.id || Date.now(),
-      name: name.trim(),
-      phone: phone.trim()
-    })
-
-    setName('')
-    setPhone('')
+    onSave({ ...formData, id: contact?.id })
+    setFormData({ name: '', phone: '' })
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <div>
-        <input
-          type="text"
-          placeholder="Nome"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--wa-green)]"
-          required
-        />
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-1 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">Nome</label>
+          <input
+            type="text"
+            value={formData.name}
+            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="w-full px-4 py-2.5 rounded-xl focus:outline-none transition-all"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-1.5 ml-1">WhatsApp</label>
+          <input
+            type="text"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            placeholder="5511999999999"
+            className="w-full px-4 py-2.5 rounded-xl focus:outline-none transition-all"
+            required
+          />
+        </div>
       </div>
-      <div>
-        <input
-          type="tel"
-          placeholder="Telefone (ex: 5511999999999)"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--wa-green)]"
-          required
-        />
-      </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 pt-2">
         <button
           type="submit"
-          className="bg-[var(--wa-green)] hover:bg-[var(--wa-dark-green)] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className="flex-1 bg-green-500 hover:bg-green-600 text-white py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-green-500/10"
         >
-          {contact ? 'Salvar' : 'Adicionar'}
+          Salvar
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+          className="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-gray-400 rounded-xl font-bold transition-all border border-white/5"
         >
           Cancelar
         </button>

@@ -5,7 +5,7 @@ import MessageComposer from './components/MessageComposer'
 import SendProgress from './components/SendProgress'
 import QRCode from 'qrcode'
 
-const API_URL = 'http://187.127.251.127:3001'
+const API_URL = 'https://throughout-persons-nevertheless-love.trycloudflare.com'
 
 function App() {
   const [contacts, setContacts] = useState(() => {
@@ -14,6 +14,7 @@ function App() {
   })
   const [selectedContacts, setSelectedContacts] = useState([])
   const [message, setMessage] = useState('')
+  const [delay, setDelay] = useState(5000)
   const [sending, setSending] = useState(false)
   const [sendProgress, setSendProgress] = useState({ current: 0, total: 0, success: 0, failed: 0 })
   const [editingContact, setEditingContact] = useState(null)
@@ -236,44 +237,77 @@ function App() {
     }, 3000)
   }
 
+  const clearAllContacts = () => {
+    if (window.confirm('Tem certeza que deseja remover TODOS os contatos da lista?')) {
+      setContacts([])
+      setSelectedContacts([])
+    }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-[var(--wa-teal)] text-white shadow-lg">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.468A11.932 11.932 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.156 0-4.154-.684-5.787-1.848l-.414-.281-2.742.867.875-2.674-.308-.446A9.701 9.701 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/>
-            </svg>
+    <div className="min-h-screen bg-[#020617] text-gray-100 relative overflow-hidden">
+      {/* Dynamic Particle Background */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-green-500/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-teal-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+        
+        {/* Floating Particles */}
+        {[...Array(20)].map((_, i) => (
+          <div 
+            key={i}
+            className="absolute bg-white/10 rounded-full animate-float"
+            style={{
+              width: Math.random() * 4 + 'px',
+              height: Math.random() * 4 + 'px',
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              animationDuration: Math.random() * 10 + 10 + 's',
+              animationDelay: Math.random() * 5 + 's'
+            }}
+          />
+        ))}
+      </div>
+
+      <header className="relative z-10 border-b border-white/10 bg-white/5 backdrop-blur-md sticky top-0">
+        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4 group cursor-default">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-600 rounded-2xl flex items-center justify-center shadow-lg shadow-green-500/20 group-hover:scale-110 transition-transform duration-300">
+              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.468A11.932 11.932 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.156 0-4.154-.684-5.787-1.848l-.414-.281-2.742.867.875-2.674-.308-.446A9.701 9.701 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/>
+              </svg>
+            </div>
             <div>
-              <h1 className="text-xl font-bold">WhatsApp Bulk Sender</h1>
-              <p className="text-sm text-green-200">Envie mensagens para múltiplos contatos</p>
+              <h1 className="text-2xl font-black tracking-tight bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                WhatsApp <span className="text-green-400">Ziv</span> Sender
+              </h1>
+              <p className="text-xs font-medium text-gray-500 uppercase tracking-widest">Premium Bulk Messaging</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span className={`text-sm px-3 py-1 rounded-full ${
-              whatsappStatus === 'connected' ? 'bg-green-500' : 
-              whatsappStatus === 'connecting' || whatsappStatus === 'qr' ? 'bg-yellow-500' : 'bg-red-500'
+          <div className="flex items-center gap-4">
+            <div className={`flex items-center gap-2 px-4 py-1.5 rounded-full border text-xs font-bold transition-all duration-500 ${
+              whatsappStatus === 'connected' ? 'bg-green-500/10 border-green-500/50 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 
+              whatsappStatus === 'connecting' || whatsappStatus === 'qr' ? 'bg-yellow-500/10 border-yellow-500/50 text-yellow-400' : 'bg-red-500/10 border-red-500/50 text-red-400'
             }`}>
-              {whatsappStatus === 'connected' ? '✓ Conectado' : 
-               whatsappStatus === 'connecting' ? '⏳ Iniciando...' : 
-               whatsappStatus === 'qr' ? '📱 Escaneie o QR' : '✗ Desconectado'}
-            </span>
+              <span className={`w-2 h-2 rounded-full ${whatsappStatus === 'connected' ? 'bg-green-500 animate-pulse' : 'bg-current'}`}></span>
+              {whatsappStatus === 'connected' ? 'SISTEMA ONLINE' : 
+               whatsappStatus === 'connecting' ? 'INICIANDO...' : 
+               whatsappStatus === 'qr' ? 'AGUARDANDO SCAN' : 'SISTEMA OFFLINE'}
+            </div>
             {whatsappStatus === 'connected' ? (
               <button
                 onClick={disconnectWhatsApp}
-                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-red-500/10 hover:bg-red-500 text-red-500 hover:text-white border border-red-500/20 px-4 py-2 rounded-xl text-sm font-bold transition-all"
               >
-                Desconectar
+                Sair
               </button>
             ) : (
               <button
                 onClick={connectWhatsApp}
                 disabled={whatsappStatus === 'connecting'}
-                className="bg-[var(--wa-green)] hover:bg-[var(--wa-dark-green)] disabled:opacity-60 disabled:cursor-not-allowed px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                className="bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-lg shadow-green-500/20 transition-all hover:-translate-y-0.5 active:translate-y-0"
               >
-                {whatsappStatus === 'connecting' ? 'Iniciando...' : 
-                 whatsappStatus === 'qr' ? 'Ver QR Code' : 'Conectar WhatsApp'}
+                {whatsappStatus === 'connecting' ? 'Conectando...' : 'Conectar'}
               </button>
             )}
           </div>
@@ -282,114 +316,103 @@ function App() {
 
       {/* QR Code Modal */}
       {showQRModal && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
-          onClick={(e) => { if (e.target === e.currentTarget) setShowQRModal(false) }}
-        >
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center">
-            <div className="flex items-center justify-center gap-2 mb-2">
-              <svg className="w-7 h-7 text-green-500" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492l4.638-1.468A11.932 11.932 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75c-2.156 0-4.154-.684-5.787-1.848l-.414-.281-2.742.867.875-2.674-.308-.446A9.701 9.701 0 012.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75z"/>
-              </svg>
-              <h2 className="text-xl font-bold text-gray-800">Conectar WhatsApp</h2>
-            </div>
-            <p className="text-gray-500 text-sm mb-6">
-              Abra o WhatsApp no seu celular → Dispositivos conectados → Conectar dispositivo → Escaneie o QR Code
-            </p>
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+          <div className="absolute inset-0 bg-[#020617]/90 backdrop-blur-sm" onClick={() => setShowQRModal(false)}></div>
+          <div className="bg-[#1e293b] border border-white/10 rounded-[32px] shadow-2xl p-10 max-w-sm w-full relative z-10 text-center scale-in-center">
+            <h2 className="text-2xl font-bold text-white mb-2">Escaneie o QR</h2>
+            <p className="text-gray-400 text-sm mb-8 leading-relaxed">Acesse o WhatsApp no seu celular e aponte a câmera para esta tela.</p>
 
-            <div className="flex items-center justify-center min-h-[280px]">
+            <div className="bg-white p-4 rounded-3xl inline-block shadow-2xl mb-8">
               {qrDataUrl ? (
-                <img
-                  src={qrDataUrl}
-                  alt="QR Code WhatsApp"
-                  className="rounded-xl border-4 border-green-100 shadow"
-                  style={{ width: 280, height: 280 }}
-                />
+                <img src={qrDataUrl} alt="QR Code" className="w-[240px] h-[240px]" />
               ) : (
-                <div className="flex flex-col items-center gap-4 text-gray-400">
-                  <svg className="w-12 h-12 animate-spin text-green-400" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-                  </svg>
-                  <p className="text-sm">Aguardando QR code...<br/>Pode levar alguns segundos</p>
+                <div className="w-[240px] h-[240px] flex items-center justify-center text-green-500">
+                  <div className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                 </div>
               )}
             </div>
 
-            <p className="text-xs text-gray-400 mt-4">
-              O QR code atualiza automaticamente a cada 2 segundos
-            </p>
             <button
               onClick={() => setShowQRModal(false)}
-              className="mt-4 text-sm text-gray-400 hover:text-gray-600 underline"
+              className="w-full py-4 text-gray-400 hover:text-white transition-colors font-medium"
             >
-              Fechar
+              Cancelar Conexão
             </button>
           </div>
         </div>
       )}
 
-      <main className="max-w-6xl mx-auto px-4 py-6 grid md:grid-cols-2 gap-6">
-        <div className="bg-white rounded-lg shadow">
-          <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-lg font-semibold text-gray-800">
-              Contatos ({contacts.length})
-            </h2>
-            <div className="flex gap-2">
-              <input
-                type="file"
-                accept=".vcf"
-                ref={fileInputRef}
-                onChange={handleVCFImport}
-                className="hidden"
+      <main className="max-w-6xl mx-auto px-6 py-8 grid md:grid-cols-5 gap-8 relative z-10">
+        <div className="md:col-span-3 flex flex-col gap-6">
+          <div className="bg-white/5 border border-white/10 rounded-3xl overflow-hidden backdrop-blur-md shadow-xl flex flex-col h-[calc(100vh-200px)]">
+            <div className="p-6 border-b border-white/10 flex justify-between items-center bg-white/5">
+              <div>
+                <h2 className="text-xl font-bold text-white">Contatos</h2>
+                <p className="text-xs text-gray-500 font-medium">{contacts.length} registros encontrados</p>
+              </div>
+              <div className="flex gap-2">
+                <input type="file" accept=".vcf" ref={fileInputRef} onChange={handleVCFImport} className="hidden" />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-2.5 bg-white/5 hover:bg-white/10 rounded-xl transition-all border border-white/10 text-gray-300"
+                  title="Importar VCF"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                </button>
+                <button
+                  onClick={clearAllContacts}
+                  className="p-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-xl transition-all border border-red-500/20"
+                  title="Limpar Lista"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+                <button
+                  onClick={() => { setShowForm(true); setEditingContact(null) }}
+                  className="px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold text-sm shadow-lg shadow-green-500/20 transition-all active:scale-95"
+                >
+                  + Adicionar
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+              {(showForm || editingContact) && (
+                <div className="mb-6 bg-white/5 border border-white/10 rounded-2xl p-4 slide-down">
+                  <ContactForm
+                    contact={editingContact}
+                    onSave={editingContact ? updateContact : addContact}
+                    onCancel={() => { setShowForm(false); setEditingContact(null) }}
+                  />
+                </div>
+              )}
+
+              <ContactList
+                contacts={contacts}
+                selected={selectedContacts}
+                onToggle={toggleSelect}
+                onSelectAll={selectAll}
+                onEdit={(contact) => { setEditingContact(contact); setShowForm(true) }}
+                onDelete={deleteContact}
               />
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                Importar VCF
-              </button>
-              <button
-                onClick={() => { setShowForm(true); setEditingContact(null) }}
-                className="bg-[var(--wa-green)] hover:bg-[var(--wa-dark-green)] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-              >
-                + Novo Contato
-              </button>
             </div>
           </div>
-
-          {(showForm || editingContact) && (
-            <div className="p-4 border-b bg-gray-50">
-              <ContactForm
-                contact={editingContact}
-                onSave={editingContact ? updateContact : addContact}
-                onCancel={() => { setShowForm(false); setEditingContact(null) }}
-              />
-            </div>
-          )}
-
-          <ContactList
-            contacts={contacts}
-            selected={selectedContacts}
-            onToggle={toggleSelect}
-            onSelectAll={selectAll}
-            onEdit={(contact) => { setEditingContact(contact); setShowForm(true) }}
-            onDelete={deleteContact}
-          />
         </div>
 
-        <div className="space-y-6">
-          <MessageComposer
-            message={message}
-            onChange={setMessage}
-            selectedCount={selectedContacts.length}
-            onSend={sendMessages}
-            disabled={sending}
-          />
+        <div className="md:col-span-2 space-y-6">
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md shadow-xl">
+            <MessageComposer
+              message={message}
+              onChange={setMessage}
+              selectedCount={selectedContacts.length}
+              onSend={sendMessages}
+              disabled={sending}
+            />
+          </div>
 
           {sending && (
-            <SendProgress progress={sendProgress} />
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-6 backdrop-blur-md shadow-xl animate-bounce-subtle">
+              <SendProgress progress={sendProgress} />
+            </div>
           )}
         </div>
       </main>
