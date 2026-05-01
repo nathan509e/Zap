@@ -211,7 +211,8 @@ function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           contacts: selected.map(c => ({ phone: formatPhone(c.phone), name: c.name })),
-          message
+          message,
+          delay
         })
       })
       
@@ -403,6 +404,8 @@ function App() {
             <MessageComposer
               message={message}
               onChange={setMessage}
+              delay={delay}
+              onDelayChange={setDelay}
               selectedCount={selectedContacts.length}
               onSend={sendMessages}
               disabled={sending}

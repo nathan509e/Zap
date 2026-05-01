@@ -9,19 +9,38 @@ function MessageComposer({ message, onChange, selectedCount, onSend, disabled, d
         rows={8}
         className="w-full px-4 py-3 rounded-2xl focus:outline-none resize-none transition-all"
       />
-      <div className="flex items-center gap-4 mt-4">
-        <label className="text-sm text-gray-400">Intervalo entre mensagens:</label>
-        <select
-          value={delay}
-          onChange={(e) => onDelayChange(Number(e.target.value))}
-          className="bg-white/10 text-white px-3 py-2 rounded-lg text-sm focus:outline-none"
+      <div className="flex gap-2 mt-2">
+        <button 
+          onClick={() => onChange(message + '{{nome}}')}
+          className="text-[10px] bg-white/5 hover:bg-white/10 text-gray-400 px-2 py-1 rounded-md border border-white/10 transition-all"
         >
-          <option value={3000}>3 segundos</option>
-          <option value={5000}>5 segundos</option>
-          <option value={10000}>10 segundos</option>
-          <option value={15000}>15 segundos</option>
-          <option value={30000}>30 segundos</option>
-        </select>
+          + Inserir {{nome}}
+        </button>
+      </div>
+      <div className="flex flex-col gap-4 mt-6">
+        <div className="flex items-center justify-between p-4 bg-green-500/5 border border-green-500/20 rounded-2xl">
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-sm font-semibold text-green-400">Smart Anti-Ban Ativo</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">Intervalo:</span>
+            <select
+              value={delay}
+              onChange={(e) => onDelayChange(Number(e.target.value))}
+              className="bg-white/5 text-white px-2 py-1 rounded-lg text-xs font-bold focus:outline-none border border-white/10 hover:border-white/20 transition-all cursor-pointer"
+            >
+              <option value={3000}>3s</option>
+              <option value={5000}>5s</option>
+              <option value={10000}>10s</option>
+              <option value={15000}>15s</option>
+              <option value={30000}>30s</option>
+            </select>
+          </div>
+        </div>
+        <p className="text-[10px] text-gray-500 px-1 leading-relaxed">
+          * O sistema adiciona automaticamente variações aleatórias no tempo e pausas humanas para proteger seu número contra bloqueios.
+        </p>
       </div>
       <div className="flex justify-between items-center mt-5">
         <span className="text-xs font-bold text-gray-500 uppercase tracking-wider">

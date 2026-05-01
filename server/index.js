@@ -91,27 +91,62 @@ const getPhoneVariants = (phone) => {
   return variants
 }
 
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
 app.post('/send', async (req, res) => {
-  const { contacts, message } = req.body
+  const { contacts, message, delay = 5000 } = req.body
   if (clientStatus !== 'connected') return res.json({ success: false, error: 'WhatsApp not connected' })
 
   let successCount = 0; let failedCount = 0
-  for (const contact of contacts) {
+  for (let i = 0; i < contacts.length; i++) {
+    const contact = contacts[i]
+    console.log(`[${i + 1}/${contacts.length}] Enviando para ${contact.phone}...`)
+    // Simulate typing delay (1-3 seconds)
+    await sleep(1000 + Math.random() * 2000)
+
     try {
+      // Personalize message with variables
+      let personalizedMessage = message
+        .replace(/{{nome}}/gi, contact.name)
+        .replace(/{{name}}/gi, contact.name)
+      
       const variants = getPhoneVariants(contact.phone); let sent = false
       for (const variant of variants) {
         const numberId = await client.getNumberId(variant)
         if (numberId) {
-          await client.sendMessage(numberId._serialized, message)
+          await client.sendMessage(numberId._serialized, personalizedMessage)
           successCount++; sent = true; break
         }
       }
       if (!sent) {
-        await client.sendMessage(`${contact.phone}@c.us`, message)
+        await client.sendMessage(`${contact.phone}@c.us`, personalizedMessage)
         successCount++
       }
-    } catch (error) { failedCount++ }
+      console.log(`[${i + 1}/${contacts.length}] Sucesso: ${contact.phone}`)
+    } catch (error) { 
+      failedCount++
+      console.error(`[${i + 1}/${contacts.length}] Erro ao enviar para ${contact.phone}:`, error.message)
+    }
+
+    // Add delay between messages (except for the last one)
+    if (i < contacts.length - 1) {
+      // Base delay + random variation
+      const randomVariation = Math.floor(Math.random() * 2000)
+      let currentDelay = delay + randomVariation
+
+      // Add a longer "human pause" every 5 messages
+      if ((i + 1) % 5 === 0) {
+        const pauseTime = 10000 + Math.random() * 5000
+        console.log(`Pausa anti-ban prolongada: ${Math.round(pauseTime/1000)}s...`)
+        currentDelay += pauseTime
+      } else {
+        console.log(`Aguardando ${Math.round(currentDelay/1000)}s para a próxima mensagem...`)
+      }
+
+      await sleep(currentDelay)
+    }
   }
+  console.log(`Lote finalizado. Sucesso: ${successCount}, Falhas: ${failedCount}`)
   res.json({ success: true, successCount, failedCount })
 })
 
