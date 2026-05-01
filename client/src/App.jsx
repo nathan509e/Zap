@@ -5,7 +5,7 @@ import MessageComposer from './components/MessageComposer'
 import SendProgress from './components/SendProgress'
 import QRCode from 'qrcode'
 
-const API_URL = 'http://187.127.251.137:3001'
+const API_URL = 'https://commit-abu-electricity-riding.trycloudflare.com'
 
 function App() {
   const [contacts, setContacts] = useState(() => {
